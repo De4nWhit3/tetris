@@ -1,0 +1,39 @@
+#gameContainer {
+    width: 100%;
+    margin: auto;
+    background: gray;
+}
+
+#game {
+    background: blue;
+    width: 400px;
+    height: 100px;
+    margin: auto;
+}
+
+#row1 {
+    background: green;
+}
+
+#colorTest1,
+#colorTest2,
+#colorTest3,
+#colorTest4,
+#colorTest5,
+#colorTest6,
+#colorTest7,
+#colorTest8,
+#colorTest9,
+#colorTest10 {
+    width: 40px;
+    height: 40px;
+    border: 2px solid brown;
+    box-sizing: border-box;
+    display: inline-block;
+    margin: 0;
+}
+
+#colorTest1 {
+    background: yellow;
+}
+
