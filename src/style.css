@@ -1,18 +1,21 @@
+body {
+    background: #1a1a1a;
+}
+
 #gameContainer {
     width: 100%;
     margin: auto;
-    background: gray;
 }
 
 #game {
-    background: blue;
+    background: black;
     width: 400px;
-    height: 100px;
+    height: 800px;
     margin: auto;
 }
 
 #row1 {
-    background: green;
+    display: flex;
 }
 
 #colorTest1,
@@ -25,7 +28,7 @@
 #colorTest8,
 #colorTest9,
 #colorTest10 {
-    width: 40px;
+    flex: 1;
     height: 40px;
     border: 2px solid brown;
     box-sizing: border-box;
@@ -34,6 +37,42 @@
 }
 
 #colorTest1 {
-    background: yellow;
+    border-color: #00e6e6;
+    background: #003366;
 }
 
+#colorTest2 {
+    border-color: #ffff00;
+    background: #e6b800;
+}
+
+#colorTest3 {
+    border-color: #66ff33;
+    background: #226600;
+}
+
+#colorTest4 {
+    border-color: #ff99ff;
+    background: #b30059;
+}
+
+#colorTest5 {
+    border-color: #ff751a;
+    background: #993d00;
+}
+
+#colorTest6 {
+    border-color: #ff0000;
+    background: #660000;
+}
+
+#colorTest7 {
+    border-color: #ac00e6;
+    background: #39004d;
+}
+
+#colorTest8,
+#colorTest9,
+#colorTest10{
+    visibility: hidden;
+}
