@@ -3,6 +3,7 @@ const ctx = gameBackdrop.getContext("2d");
 const gameBackdropWidth = gameBackdrop.width; // this is what we assigned in the
 const gameBackdropHeight = gameBackdrop.height; // html file for our canvas
 const gameBackdropColor = "black";
+const scoreText = document.querySelector("#scoreDiv");
 
 const cubeColor = "yellow";
 const cubeBorder = "white";
@@ -30,9 +31,16 @@ window.addEventListener("keydown", changeDirection);
 resetBtn.addEventListener("click", resetGame);
 
 gameStart();
-createCube();
+//createCube();
+//drawCube();
 
-function gameStart(){};
+function gameStart(){
+    running = true;
+    scoreText.textContent = score;
+    createCube();
+    drawCube();
+    nextTick();
+};
 function nextTick(){};
 function clearBoard(){};
 function createCube(){
@@ -42,9 +50,12 @@ function createCube(){
     }
 
     cubeX = randomCube(0, gameBackdropWidth - cubeSize);
-    console.log(cubeX);
+    cubeY = randomCube(0, gameBackdropHeight - cubeSize);
 };
-function drawCube(){};
+function drawCube(){
+    ctx.fillStyle = cubeColor;
+    ctx.fillRect(cubeX, cubeY, cubeSize, cubeSize);
+};
 function moveCube(){};
 function changeDirection(){};
 function checkGameOver(){};
