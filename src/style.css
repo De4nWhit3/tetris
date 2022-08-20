@@ -84,8 +84,8 @@ button {
     padding: 15px;
     cursor: pointer;
     margin-top: 10px;
-    background: black;
     transition: background 1s, color 1s, border-color 1s;
+    box-sizing: border-box;
 }
 
 #startBtn {
@@ -110,4 +110,23 @@ button {
     color: #ffff00;
     border-color: #ffff00;
     background: #b38f00;
+}
+
+#scoreDiv {
+    color: #ac00e6;
+    background: #39004d;
+    transition: background 1s, color 1s, border-color 1s;
+    width: 304px;
+    margin: auto;
+    border: 3px solid #ac00e6;
+    padding: 15px;
+    cursor: pointer;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+#scoreDiv:hover {
+    color: #ff751a;
+    border-color: #ff751a;
+    background: #993d00;
 }
