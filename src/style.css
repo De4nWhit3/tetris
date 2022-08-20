@@ -44,7 +44,7 @@ body {
 
 #colorTest2 {
     border-color: #ffff00;
-    background: #e6b800;
+    background: #b38f00;
 }
 
 #colorTest3 {
@@ -85,6 +85,7 @@ button {
     cursor: pointer;
     margin-top: 10px;
     background: black;
+    transition: background 1s, color 1s, border-color 1s;
 }
 
 #startBtn {
@@ -93,9 +94,20 @@ button {
     background: #003366;
 }
 
+#startBtn:hover {
+    color: #66ff33;
+    border-color: #66ff33;
+    background: #226600;
+}
+
 #pauseBtn {
     color: #ff99ff;
     border-color: #ff99ff;
     background: #b30059;
 }
 
+#pauseBtn:hover {
+    color: #ffff00;
+    border-color: #ffff00;
+    background: #b38f00;
+}
