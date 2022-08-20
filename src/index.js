@@ -22,10 +22,11 @@ const purpleLight = "#ac00e6";
 const purpleDark = "#39004d";
 
 let running = false;
-let xVelocity = cubeSize; // how fast we move (40px) to the right on a tick
+let xVelocity = 0; // how fast we move (40px) to the right on a tick
 let yVelocity = cubeSize;
 let cubeX;
 let cubeY;
+let gameSpeed = 500;
 
 let score = 0;
 
@@ -37,42 +38,36 @@ let i_piece = [
     {x: 0, y: cubeSize},
     {x: 0, y: 0}
 ];
-
 let j_piece = [
     {x: cubeSize * 2, y: cubeSize * 2},
     {x: cubeSize * 3, y: cubeSize * 2},
     {x: cubeSize * 3, y: cubeSize},
     {x: cubeSize * 3, y: 0}
 ];
-
 let l_piece = [
     {x: cubeSize * 6, y: cubeSize * 2},
     {x: cubeSize * 5, y: cubeSize * 2},
     {x: cubeSize * 5, y: cubeSize},
     {x: cubeSize * 5, y: 0}
 ];
-
 let o_piece = [
   {x: cubeSize * 8, y: cubeSize},
   {x: cubeSize * 8, y: 0},
   {x: cubeSize * 9, y: cubeSize},
   {x: cubeSize * 9, y: 0}
 ];
-
 let s_piece = [
     {x: cubeSize * 2, y: cubeSize * 5},
     {x: cubeSize, y: cubeSize * 5},
     {x: cubeSize, y: cubeSize * 6},
     {x: 0, y: cubeSize * 6}
 ];
-
 let t_piece = [
     {x: cubeSize * 6, y: cubeSize * 4},
     {x: cubeSize * 5, y: cubeSize * 4},
     {x: cubeSize * 4, y: cubeSize * 4},
     {x: cubeSize * 5, y: cubeSize * 5}
 ];
-
 let z_piece = [
     {x: cubeSize * 5, y: cubeSize * 8},
     {x: cubeSize * 4, y: cubeSize * 8},
@@ -90,16 +85,15 @@ gameStart();
 function gameStart(){
     running = true;
     scoreText.textContent = score;
-    createCube();
-    drawCube();
+//    createCube();
+//    drawCube();
     nextTick();
 };
 function nextTick(){
     if(running){
         setTimeout(()=>{
             clearBoard();
-            drawCube();
-            moveTetrisPiece();
+//            drawCube();
             drawTetrisPiece(i_piece, blueDark, blueLight);
             drawTetrisPiece(j_piece, yellowDark, yellowLight);
             drawTetrisPiece(l_piece, greenDark, greenLight);
@@ -107,9 +101,18 @@ function nextTick(){
             drawTetrisPiece(s_piece, orangeDark, orangeLight);
             drawTetrisPiece(t_piece, redDark, redLight);
             drawTetrisPiece(z_piece, purpleDark, purpleLight);
+
+            moveTetrisPiece(i_piece);
+            moveTetrisPiece(j_piece);
+            moveTetrisPiece(l_piece);
+            moveTetrisPiece(o_piece);
+            moveTetrisPiece(s_piece);
+            moveTetrisPiece(t_piece);
+            moveTetrisPiece(z_piece);
+
             checkGameOver();
             nextTick();
-        }, 75);
+        }, gameSpeed);
     }
     else {
         displayGameOver();
@@ -119,22 +122,26 @@ function clearBoard(){
     ctx.fillStyle = greyDark;
     ctx.fillRect(0, 0, gameBackdropWidth, gameBackdropHeight);
 };
-function createCube(){
-    function randomCube(min, max){
-        const randomNum = Math.round((Math.random() * (max - min) + min) / cubeSize) * cubeSize;
-        return randomNum;
+//function createCube(){
+//    function randomCube(min, max){
+//        const randomNum = Math.round((Math.random() * (max - min) + min) / cubeSize) * cubeSize;
+//        return randomNum;
+//    }
+//
+//    cubeX = randomCube(0, gameBackdropWidth - cubeSize);
+//    cubeY = randomCube(0, gameBackdropHeight - cubeSize);
+//};
+//function drawCube(){
+//    ctx.fillStyle = blueDark;
+//
+//    ctx.fillRect(cubeX, cubeY, cubeSize, cubeSize);
+//};
+function moveTetrisPiece(piece){
+    for(let cube of piece){
+//        console.log(cube.x);
+        cube.y = cube.y + cubeSize;
     }
-
-    cubeX = randomCube(0, gameBackdropWidth - cubeSize);
-    cubeY = randomCube(0, gameBackdropHeight - cubeSize);
 };
-function drawCube(){
-    ctx.fillStyle = blueDark;
-
-    ctx.fillRect(cubeX, cubeY, cubeSize, cubeSize);
-};
-function moveCube(){};
-function moveTetrisPiece(){};
 function drawTetrisPiece(piece, darkColor, lightColor){
     ctx.fillStyle = darkColor;
     ctx.strokeStyle = lightColor; // for border
