@@ -21,17 +21,20 @@ const redDark = "#660000";
 const purpleLight = "#ac00e6";
 const purpleDark = "#39004d";
 
+const LEFT = 37;
+const UP = 38;
+const RIGHT = 39;
+const DOWN = 40;
+
 let running = false;
 let xVelocity = 0; // how fast we move (40px) to the right on a tick
 let yVelocity = cubeSize;
 let cubeX;
 let cubeY;
 let gameSpeed = 500;
-
 let score = 0;
 
-// an array of objects, each object is a cube of a piece
-// each has their own x and y coordinates
+// an array of objects, each object is a cube of a piece, each has their own x and y coordinates
 let i_piece = [
     {x: 0, y: cubeSize * 3},
     {x: 0, y: cubeSize * 2},
@@ -79,8 +82,6 @@ window.addEventListener("keydown", changeDirection);
 resetBtn.addEventListener("click", resetGame);
 
 gameStart();
-//createCube();
-//drawCube();
 
 function gameStart(){
     running = true;
@@ -122,36 +123,46 @@ function clearBoard(){
     ctx.fillStyle = greyDark;
     ctx.fillRect(0, 0, gameBackdropWidth, gameBackdropHeight);
 };
-//function createCube(){
-//    function randomCube(min, max){
-//        const randomNum = Math.round((Math.random() * (max - min) + min) / cubeSize) * cubeSize;
-//        return randomNum;
-//    }
-//
-//    cubeX = randomCube(0, gameBackdropWidth - cubeSize);
-//    cubeY = randomCube(0, gameBackdropHeight - cubeSize);
-//};
-//function drawCube(){
-//    ctx.fillStyle = blueDark;
-//
-//    ctx.fillRect(cubeX, cubeY, cubeSize, cubeSize);
-//};
+
 function moveTetrisPiece(piece){
     for(let cube of piece){
-//        console.log(cube.x);
-        cube.y = cube.y + cubeSize;
+        cube.y = cube.y + yVelocity;
     }
 };
 function drawTetrisPiece(piece, darkColor, lightColor){
     ctx.fillStyle = darkColor;
-    ctx.strokeStyle = lightColor; // for border
-    // our tetris piece is an array of objects
+    ctx.strokeStyle = lightColor; // for border our tetris piece is an array of objects
     piece.forEach((tetrisPieceCube)=>{
         ctx.fillRect(tetrisPieceCube.x, tetrisPieceCube.y, cubeSize, cubeSize);
         ctx.strokeRect(tetrisPieceCube.x, tetrisPieceCube.y, cubeSize, cubeSize);
     })
 };
-function changeDirection(){};
+function changeDirection(event){
+    const keyPressed = event.keyCode;
+
+    switch(true){
+        case(keyPressed == LEFT):
+            moveLeft(i_piece);
+            break;
+        case(keyPressed == RIGHT):
+            moveRight(i_piece);
+            break;
+        default:
+            xVelocity = 0;
+    }
+};
 function checkGameOver(){};
 function displayGameOver(){};
 function resetGame(){};
+
+function moveLeft(piece){
+    for (let cube of piece) {
+        cube.x -= cubeSize;
+    }
+}
+
+function moveRight(piece){
+    for (let cube of piece) {
+        cube.x += cubeSize;
+    }
+}
