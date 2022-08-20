@@ -99,13 +99,13 @@ button {
     background: #226600;
 }
 
-#pauseBtn {
+#resetBtn {
     color: #ff99ff;
     border-color: #ff99ff;
     background: #b30059;
 }
 
-#pauseBtn:hover {
+#resetBtn:hover {
     color: #ffff00;
     border-color: #ffff00;
     background: #b38f00;

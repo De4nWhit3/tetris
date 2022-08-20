@@ -30,3 +30,23 @@ window.addEventListener("keydown", changeDirection);
 resetBtn.addEventListener("click", resetGame);
 
 gameStart();
+createCube();
+
+function gameStart(){};
+function nextTick(){};
+function clearBoard(){};
+function createCube(){
+    function randomCube(min, max){
+        const randomNum = Math.round((Math.random() * (max - min) + min) / cubeSize) * cubeSize;
+        return randomNum;
+    }
+
+    cubeX = randomCube(0, gameBackdropWidth - cubeSize);
+    console.log(cubeX);
+};
+function drawCube(){};
+function moveCube(){};
+function changeDirection(){};
+function checkGameOver(){};
+function displayGameOver(){};
+function resetGame(){};
