@@ -3,24 +3,7 @@ const ctx = gameBackdrop.getContext("2d");
 const gameBackdropWidth = gameBackdrop.width; // this is what we assigned in the
 const gameBackdropHeight = gameBackdrop.height; // html file for our canvas
 const scoreText = document.querySelector("#scoreDiv");
-
 const cubeSize = 40;
-const greyDark = "#0d0d0d";
-const blueLight = "#00e6e6";
-const blueDark = "#003366";
-const yellowLight = "#ffff00";
-const yellowDark = "#b38f00";
-const greenLight = "#66ff33";
-const greenDark = "#226600";
-const pinkLight = "#ff99ff";
-const pinkDark = "#b30059";
-const orangeLight = "#ff751a";
-const orangeDark = "#993d00";
-const redLight = "#ff0000";
-const redDark = "#660000";
-const purpleLight = "#ac00e6";
-const purpleDark = "#39004d";
-
 const LEFT = 37;
 const UP = 38;
 const RIGHT = 39;
@@ -33,6 +16,7 @@ let cubeX;
 let cubeY;
 let gameSpeed = 500;
 let score = 0;
+let currentPiece;
 
 // an array of objects, each object is a cube of a piece, each has their own x and y coordinates
 let i_piece = [
@@ -78,6 +62,18 @@ let z_piece = [
     {x: cubeSize * 3, y: cubeSize * 7}
 ];
 
+const greyDark = "#0d0d0d";
+
+let tetrisPieces = [
+    {cubes: i_piece, fillColor: "#003366", lineColor: "#00e6e6"},
+    {cubes: j_piece, fillColor: "#b38f00", lineColor: "#ffff00"},
+    {cubes: l_piece, fillColor: "#226600", lineColor: "#66ff33"},
+    {cubes: o_piece, fillColor: "#b30059", lineColor: "#ff99ff"},
+    {cubes: s_piece, fillColor: "#993d00", lineColor: "#ff751a"},
+    {cubes: t_piece, fillColor: "#660000", lineColor: "#ff0000"},
+    {cubes: z_piece, fillColor: "#39004d", lineColor: "#ac00e6"}
+];
+
 window.addEventListener("keydown", changeDirection);
 resetBtn.addEventListener("click", resetGame);
 
@@ -86,31 +82,26 @@ gameStart();
 function gameStart(){
     running = true;
     scoreText.textContent = score;
+    currentPiece = getRandomTetrisPiece(tetrisPieces);
+    console.log(currentPiece);
     // generate a random tetris piece to place
 //    createCube();
 //    drawCube();
     nextTick();
 };
+
+function getRandomTetrisPiece(pieces) {
+    let randomIndex = Math.floor(Math.random() * 7);
+    return pieces[randomIndex];
+}
+
 function nextTick(){
     if(running){
         setTimeout(()=>{
             clearBoard();
-//            drawCube();
-            drawTetrisPiece(i_piece, blueDark, blueLight);
-            drawTetrisPiece(j_piece, yellowDark, yellowLight);
-            drawTetrisPiece(l_piece, greenDark, greenLight);
-            drawTetrisPiece(o_piece, pinkDark, pinkLight);
-            drawTetrisPiece(s_piece, orangeDark, orangeLight);
-            drawTetrisPiece(t_piece, redDark, redLight);
-            drawTetrisPiece(z_piece, purpleDark, purpleLight);
 
-            moveTetrisPiece(i_piece);
-            moveTetrisPiece(j_piece);
-            moveTetrisPiece(l_piece);
-            moveTetrisPiece(o_piece);
-            moveTetrisPiece(s_piece);
-            moveTetrisPiece(t_piece);
-            moveTetrisPiece(z_piece);
+            drawTetrisPiece(currentPiece.cubes, currentPiece.fillColor, currentPiece.lineColor);
+            moveTetrisPiece(currentPiece.cubes);
 
             checkGameOver();
             nextTick();
@@ -143,13 +134,11 @@ function changeDirection(event){
 
     switch(true){
         case(keyPressed == LEFT):
-            moveLeft(i_piece);
+            moveLeft(currentPiece.cubes);
             break;
         case(keyPressed == RIGHT):
-            moveRight(i_piece);
+            moveRight(currentPiece.cubes);
             break;
-        default:
-            xVelocity = 0;
     }
 };
 function checkGameOver(){};
@@ -164,7 +153,6 @@ function moveLeft(piece){
     for (let cube of piece) {
         cube.x -= cubeSize;
     }
-
 }
 
 function moveRight(piece){
