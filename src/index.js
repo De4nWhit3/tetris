@@ -2,10 +2,10 @@ const gameBackdrop = document.querySelector("#gameBackdrop");
 const ctx = gameBackdrop.getContext("2d");
 const gameBackdropWidth = gameBackdrop.width; // this is what we assigned in the
 const gameBackdropHeight = gameBackdrop.height; // html file for our canvas
-const gameBackdropColor = "black";
 const scoreText = document.querySelector("#scoreDiv");
 
 const cubeSize = 40;
+const greyDark = "#0d0d0d";
 const blueLight = "#00e6e6";
 const blueDark = "#003366";
 const yellowLight = "#ffff00";
@@ -31,7 +31,7 @@ let score = 0;
 
 // an array of object, each object is a cube of a piece
 // each has their own x and y coordinates
-let cube = [
+let tetrisPiece = [
     {x: cubeSize * 4, y: 0},
     {x: cubeSize * 3, y: 0},
     {x: cubeSize * 2, y: 0},
@@ -53,8 +53,25 @@ function gameStart(){
     drawCube();
     nextTick();
 };
-function nextTick(){};
-function clearBoard(){};
+function nextTick(){
+    if(running){
+        setTimeout(()=>{
+            clearBoard();
+            drawCube();
+            moveTetrisPiece();
+            drawTetrisPiece();
+            checkGameOver();
+            nextTick();
+        }, 75);
+    }
+    else {
+        displayGameOver();
+    }
+};
+function clearBoard(){
+    ctx.fillStyle = greyDark;
+    ctx.fillRect(0, 0, gameBackdropWidth, gameBackdropHeight);
+};
 function createCube(){
     function randomCube(min, max){
         const randomNum = Math.round((Math.random() * (max - min) + min) / cubeSize) * cubeSize;
@@ -70,6 +87,16 @@ function drawCube(){
     ctx.fillRect(cubeX, cubeY, cubeSize, cubeSize);
 };
 function moveCube(){};
+function moveTetrisPiece(){};
+function drawTetrisPiece(){
+    ctx.fillStyle = blueDark;
+    ctx.strokeStyle = blueLight; // for border
+    // our tetris piece is an array of objects
+    tetrisPiece.forEach((tetrisPieceCube)=>{
+        ctx.fillRect(tetrisPieceCube.x, tetrisPieceCube.y, cubeSize, cubeSize);
+        ctx.strokeRect(tetrisPieceCube.x, tetrisPieceCube.y, cubeSize, cubeSize);
+    })
+};
 function changeDirection(){};
 function checkGameOver(){};
 function displayGameOver(){};
