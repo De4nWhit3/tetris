@@ -86,6 +86,7 @@ gameStart();
 function gameStart(){
     running = true;
     scoreText.textContent = score;
+    // generate a random tetris piece to place
 //    createCube();
 //    drawCube();
     nextTick();
@@ -157,11 +158,20 @@ function resetGame(){};
 
 function moveLeft(piece){
     for (let cube of piece) {
+        if(cube.x == 0) return;
+    }
+
+    for (let cube of piece) {
         cube.x -= cubeSize;
     }
+
 }
 
 function moveRight(piece){
+    for (let cube of piece) {
+        if(cube.x == gameBackdropWidth - cubeSize) return;
+    }
+
     for (let cube of piece) {
         cube.x += cubeSize;
     }
