@@ -29,14 +29,55 @@ let cubeY;
 
 let score = 0;
 
-// an array of object, each object is a cube of a piece
+// an array of objects, each object is a cube of a piece
 // each has their own x and y coordinates
-let tetrisPiece = [
-    {x: cubeSize * 4, y: 0},
-    {x: cubeSize * 3, y: 0},
-    {x: cubeSize * 2, y: 0},
-    {x: cubeSize, y: 0},
+let i_piece = [
+    {x: 0, y: cubeSize * 3},
+    {x: 0, y: cubeSize * 2},
+    {x: 0, y: cubeSize},
     {x: 0, y: 0}
+];
+
+let j_piece = [
+    {x: cubeSize * 2, y: cubeSize * 2},
+    {x: cubeSize * 3, y: cubeSize * 2},
+    {x: cubeSize * 3, y: cubeSize},
+    {x: cubeSize * 3, y: 0}
+];
+
+let l_piece = [
+    {x: cubeSize * 6, y: cubeSize * 2},
+    {x: cubeSize * 5, y: cubeSize * 2},
+    {x: cubeSize * 5, y: cubeSize},
+    {x: cubeSize * 5, y: 0}
+];
+
+let o_piece = [
+  {x: cubeSize * 8, y: cubeSize},
+  {x: cubeSize * 8, y: 0},
+  {x: cubeSize * 9, y: cubeSize},
+  {x: cubeSize * 9, y: 0}
+];
+
+let s_piece = [
+    {x: cubeSize * 2, y: cubeSize * 5},
+    {x: cubeSize, y: cubeSize * 5},
+    {x: cubeSize, y: cubeSize * 6},
+    {x: 0, y: cubeSize * 6}
+];
+
+let t_piece = [
+    {x: cubeSize * 6, y: cubeSize * 4},
+    {x: cubeSize * 5, y: cubeSize * 4},
+    {x: cubeSize * 4, y: cubeSize * 4},
+    {x: cubeSize * 5, y: cubeSize * 5}
+];
+
+let z_piece = [
+    {x: cubeSize * 5, y: cubeSize * 8},
+    {x: cubeSize * 4, y: cubeSize * 8},
+    {x: cubeSize * 4, y: cubeSize * 7},
+    {x: cubeSize * 3, y: cubeSize * 7}
 ];
 
 window.addEventListener("keydown", changeDirection);
@@ -59,7 +100,13 @@ function nextTick(){
             clearBoard();
             drawCube();
             moveTetrisPiece();
-            drawTetrisPiece();
+            drawTetrisPiece(i_piece, blueDark, blueLight);
+            drawTetrisPiece(j_piece, yellowDark, yellowLight);
+            drawTetrisPiece(l_piece, greenDark, greenLight);
+            drawTetrisPiece(o_piece, pinkDark, pinkLight);
+            drawTetrisPiece(s_piece, orangeDark, orangeLight);
+            drawTetrisPiece(t_piece, redDark, redLight);
+            drawTetrisPiece(z_piece, purpleDark, purpleLight);
             checkGameOver();
             nextTick();
         }, 75);
@@ -88,11 +135,11 @@ function drawCube(){
 };
 function moveCube(){};
 function moveTetrisPiece(){};
-function drawTetrisPiece(){
-    ctx.fillStyle = blueDark;
-    ctx.strokeStyle = blueLight; // for border
+function drawTetrisPiece(piece, darkColor, lightColor){
+    ctx.fillStyle = darkColor;
+    ctx.strokeStyle = lightColor; // for border
     // our tetris piece is an array of objects
-    tetrisPiece.forEach((tetrisPieceCube)=>{
+    piece.forEach((tetrisPieceCube)=>{
         ctx.fillRect(tetrisPieceCube.x, tetrisPieceCube.y, cubeSize, cubeSize);
         ctx.strokeRect(tetrisPieceCube.x, tetrisPieceCube.y, cubeSize, cubeSize);
     })
