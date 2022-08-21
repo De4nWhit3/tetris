@@ -14,52 +14,52 @@ let xVelocity = 0; // how fast we move (40px) to the right on a tick
 let yVelocity = cubeSize;
 let cubeX;
 let cubeY;
-let gameSpeed = 500;
+let gameSpeed = 200;
 let score = 0;
 let currentPiece;
 
 // an array of objects, each object is a cube of a piece, each has their own x and y coordinates
-let i_piece = [
-    {x: 0, y: cubeSize * 3},
-    {x: 0, y: cubeSize * 2},
-    {x: 0, y: cubeSize},
-    {x: 0, y: 0}
+const i_piece = [
+    {x: cubeSize * 4, y: cubeSize * 3},
+    {x: cubeSize * 4, y: cubeSize * 2},
+    {x: cubeSize * 4, y: cubeSize},
+    {x: cubeSize * 4, y: 0}
 ];
-let j_piece = [
-    {x: cubeSize * 2, y: cubeSize * 2},
-    {x: cubeSize * 3, y: cubeSize * 2},
-    {x: cubeSize * 3, y: cubeSize},
-    {x: cubeSize * 3, y: 0}
-];
-let l_piece = [
-    {x: cubeSize * 6, y: cubeSize * 2},
+const j_piece = [
+    {x: cubeSize * 4, y: cubeSize * 2},
     {x: cubeSize * 5, y: cubeSize * 2},
     {x: cubeSize * 5, y: cubeSize},
     {x: cubeSize * 5, y: 0}
 ];
-let o_piece = [
-  {x: cubeSize * 8, y: cubeSize},
-  {x: cubeSize * 8, y: 0},
-  {x: cubeSize * 9, y: cubeSize},
-  {x: cubeSize * 9, y: 0}
+const l_piece = [
+    {x: cubeSize * 5, y: cubeSize * 2},
+    {x: cubeSize * 4, y: cubeSize * 2},
+    {x: cubeSize * 4, y: cubeSize},
+    {x: cubeSize * 4, y: 0}
 ];
-let s_piece = [
-    {x: cubeSize * 2, y: cubeSize * 5},
-    {x: cubeSize, y: cubeSize * 5},
-    {x: cubeSize, y: cubeSize * 6},
-    {x: 0, y: cubeSize * 6}
+const o_piece = [
+  {x: cubeSize * 5, y: cubeSize},
+  {x: cubeSize * 5, y: 0},
+  {x: cubeSize * 4, y: cubeSize},
+  {x: cubeSize * 4, y: 0}
 ];
-let t_piece = [
-    {x: cubeSize * 6, y: cubeSize * 4},
-    {x: cubeSize * 5, y: cubeSize * 4},
-    {x: cubeSize * 4, y: cubeSize * 4},
-    {x: cubeSize * 5, y: cubeSize * 5}
+const s_piece = [
+    {x: cubeSize * 5, y: 0},
+    {x: cubeSize * 4, y: 0},
+    {x: cubeSize * 4, y: cubeSize},
+    {x: cubeSize * 3, y: cubeSize}
 ];
-let z_piece = [
-    {x: cubeSize * 5, y: cubeSize * 8},
-    {x: cubeSize * 4, y: cubeSize * 8},
-    {x: cubeSize * 4, y: cubeSize * 7},
-    {x: cubeSize * 3, y: cubeSize * 7}
+const t_piece = [
+    {x: cubeSize * 5, y: 0},
+    {x: cubeSize * 4, y: 0},
+    {x: cubeSize * 3, y: 0},
+    {x: cubeSize * 4, y: cubeSize}
+];
+const z_piece = [
+    {x: cubeSize * 5, y: cubeSize},
+    {x: cubeSize * 4, y: cubeSize},
+    {x: cubeSize * 4, y: 0},
+    {x: cubeSize * 3, y: 0}
 ];
 
 const greyDark = "#0d0d0d";
@@ -83,10 +83,6 @@ function gameStart(){
     running = true;
     scoreText.textContent = score;
     currentPiece = getRandomTetrisPiece(tetrisPieces);
-    console.log(currentPiece);
-    // generate a random tetris piece to place
-//    createCube();
-//    drawCube();
     nextTick();
 };
 
@@ -99,10 +95,12 @@ function nextTick(){
     if(running){
         setTimeout(()=>{
             clearBoard();
-
             drawTetrisPiece(currentPiece.cubes, currentPiece.fillColor, currentPiece.lineColor);
             moveTetrisPiece(currentPiece.cubes);
-
+            if(collisionDetection(currentPiece.cubes)){
+                currentPiece = getRandomTetrisPiece(tetrisPieces);
+                // TODO: center piece to the top of the screen
+            }
             checkGameOver();
             nextTick();
         }, gameSpeed);
@@ -163,4 +161,13 @@ function moveRight(piece){
     for (let cube of piece) {
         cube.x += cubeSize;
     }
+}
+
+function collisionDetection(piece){
+    for (let cube of piece){
+        if(cube.y >= gameBackdropHeight){
+            return true;
+        }
+    }
+    return false;
 }
