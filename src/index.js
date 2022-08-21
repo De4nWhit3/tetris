@@ -14,7 +14,7 @@ let xVelocity = 0; // how fast we move (40px) to the right on a tick
 let yVelocity = cubeSize;
 let cubeX;
 let cubeY;
-let gameSpeed = 200;
+let gameSpeed = 1000;
 let score = 0;
 let currentPiece;
 
@@ -32,10 +32,10 @@ const j_piece = [
     {x: cubeSize * 5, y: 0}
 ];
 const l_piece = [
-    {x: cubeSize * 5, y: cubeSize * 2},
-    {x: cubeSize * 4, y: cubeSize * 2},
+    {x: cubeSize * 4, y: 0},
     {x: cubeSize * 4, y: cubeSize},
-    {x: cubeSize * 4, y: 0}
+    {x: cubeSize * 4, y: cubeSize * 2},
+    {x: cubeSize * 5, y: cubeSize * 2}
 ];
 const o_piece = [
   {x: cubeSize * 5, y: cubeSize},
@@ -56,10 +56,10 @@ const t_piece = [
     {x: cubeSize * 4, y: cubeSize}
 ];
 const z_piece = [
-    {x: cubeSize * 5, y: cubeSize},
-    {x: cubeSize * 4, y: cubeSize},
+    {x: cubeSize * 3, y: 0},
     {x: cubeSize * 4, y: 0},
-    {x: cubeSize * 3, y: 0}
+    {x: cubeSize * 4, y: cubeSize},
+    {x: cubeSize * 5, y: cubeSize}
 ];
 
 const greyDark = "#0d0d0d";
@@ -88,7 +88,9 @@ function gameStart(){
 
 function getRandomTetrisPiece(pieces) {
     let randomIndex = Math.floor(Math.random() * 7);
-    return pieces[randomIndex];
+//    TODO: make a copy of and make sure not to manipulate const cubes, theyr x and y should not change
+    console.log(pieces[randomIndex]);
+    return Object.create(pieces[randomIndex]);
 }
 
 function nextTick(){
@@ -129,15 +131,19 @@ function drawTetrisPiece(piece, darkColor, lightColor){
 };
 function changeDirection(event){
     const keyPressed = event.keyCode;
+    setTimeout(()=>{
+        clearBoard();
+        drawTetrisPiece(currentPiece.cubes, currentPiece.fillColor, currentPiece.lineColor);
+        switch(true){
+            case(keyPressed == LEFT):
+                moveLeft(currentPiece.cubes);
+                break;
+            case(keyPressed == RIGHT):
+                moveRight(currentPiece.cubes);
+                break;
+        }
+    }, 100);
 
-    switch(true){
-        case(keyPressed == LEFT):
-            moveLeft(currentPiece.cubes);
-            break;
-        case(keyPressed == RIGHT):
-            moveRight(currentPiece.cubes);
-            break;
-    }
 };
 function checkGameOver(){};
 function displayGameOver(){};
