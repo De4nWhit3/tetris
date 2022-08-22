@@ -34,19 +34,11 @@ const game_board_rows = game_height / cube_size;
 // set all active and color properties to defaults for a fresh game
 
 game_board_array = [...Array(game_board_rows)].map(e => {
-    // TODO: do initialization in loop
-    return [
-        {active: false, x: 0, y: 0, fill_color: color_light_gray,outline_color: color_light_gray },
-        {active: false, x: 0, y: 0, fill_color: color_dark_gray,outline_color: color_light_gray },
-        {active: false, x: 0, y: 0, fill_color: color_light_gray,outline_color: color_light_gray },
-        {active: false, x: 0, y: 0, fill_color: color_dark_gray,outline_color: color_light_gray },
-        {active: false, x: 0, y: 0, fill_color: color_light_gray,outline_color: color_light_gray },
-        {active: false, x: 0, y: 0, fill_color: color_dark_gray,outline_color: color_light_gray },
-        {active: false, x: 0, y: 0, fill_color: color_light_gray,outline_color: color_light_gray },
-        {active: false, x: 0, y: 0, fill_color: color_dark_gray,outline_color: color_light_gray },
-        {active: false, x: 0, y: 0, fill_color: color_light_gray,outline_color: color_light_gray },
-        {active: false, x: 0, y: 0, fill_color: color_dark_gray,outline_color: color_light_gray }
-    ];
+    let arr = [];
+    for(let i = 0; i < 10; i++){
+        arr.push({active: false, x: 0, y: 0, fill_color: color_light_gray,outline_color: color_light_gray });
+    }
+    return arr;
 });
 
 let x_offset = 0;
