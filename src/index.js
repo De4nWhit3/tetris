@@ -160,6 +160,7 @@ function nextTick(){
             clearBoard(game_board_array);
 //            clear_tetris_piece(tetris_piece);
             draw_tetris_piece(tetris_piece);
+
             move_tetris_piece_down(tetris_piece);
 //            TODO: add functionality taht moves piece down y axis
 //            drawTetrisPiece(currentPiece.cubes, currentPiece.fillColor, currentPiece.lineColor);
@@ -199,6 +200,13 @@ function draw_tetris_piece(piece){
 };
 
 function move_tetris_piece_down(piece){
+//    TODO: only move down if we are not at the bottom of the board
+    for(let i = 0; i < piece.cubes.length; i++){
+        if(piece.cubes[i].y >= game_height - cube_size){
+            return;
+        }
+    }
+
     for(let i = 0; i < piece.cubes.length; i++){
         piece.cubes[i].y += cube_size;
     }
