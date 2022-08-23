@@ -163,8 +163,8 @@ function nextTick(){
         setTimeout(()=>{
             clearBoard(game_board_array);
             draw_tetris_piece(tetris_piece);
-
             move_tetris_piece_down(tetris_piece);
+            check_matches();
 //            checkGameOver();
             nextTick();
         }, game_speed);
@@ -176,6 +176,8 @@ function nextTick(){
 
 //
 function clearBoard(game_board_array){
+
+    console.log(game_board_array);
     game_board_array.forEach(row => {
         row.forEach(cube => {
             ctx.fillStyle = cube.fill_color;
@@ -216,7 +218,7 @@ function move_tetris_piece_down(piece){
             tetris_piece = getRandomTetrisPiece(tetris_pieces);
             // TODO: when the bottom is hit, stick the cube there
             stick_tetris_piece(piece);
-
+            check_matches();
             return;
         }
     }
@@ -228,6 +230,9 @@ function move_tetris_piece_down(piece){
 
 function change_direction(event){
     const keyPressed = event.keyCode;
+
+//    check if there is a full row of 'active' elements, calculate score, remove active row, move rows above down
+    check_matches();
 
     setTimeout(()=>{
 //        clear board where current piece is, and redraw it on a new place
@@ -248,6 +253,41 @@ function change_direction(event){
         }
     }, 100);
 
+};
+function check_matches(){
+
+//    TODO: change gameboardarray without messing with reference
+    // loop over all rows
+    let indices_to_delete = [];
+    for(let i = 0; i < game_board_array.length; i++){
+        let row = game_board_array[i];
+        let all_active = false;
+        for(let j = 0; j < row.length; j++){
+            if(row[j].active){
+                all_active = true;
+                continue;
+            }
+            else{
+                all_active = false;
+                break;
+            }
+        }
+
+        if(all_active){
+            indices_to_delete.push(i);
+            all_active = false;
+        }
+    }
+
+//    for(let i = 0; i < indices_to_delete.length; i++){
+//        game_board_array.splice(indices_to_delete[i], 1);
+//
+//        let arr = [];
+//        for(let i = 0; i < 10; i++){
+//            arr.push({active: false, x: 0, y: 0, index: cube_number++, fill_color: color_black,outline_color: color_light_gray });
+//        }
+//        game_board_array.unshift(arr);
+//    }
 };
 ////function checkGameOver(){};
 ////function displayGameOver(){};
