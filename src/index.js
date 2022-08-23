@@ -68,7 +68,16 @@ let game_speed = 1000;
 //
 //// an array of objects, each object is a cube of a piece, each has their own x and y coordinates
 ////  TODO: j and s freakout
-const i_piece = {cube_numbers: [5, 15, 25, 35], fill_color: color_dark_blue, outline_color: color_light_blue};
+const i_piece = {
+    cubes: [
+        {x: cube_size * 4, y: 0},
+        {x: cube_size * 4, y: cube_size},
+        {x: cube_size * 4, y: cube_size * 2},
+        {x: cube_size * 4, y: cube_size * 3}
+    ],
+    fill_color: color_dark_blue,
+    outline_color: color_light_blue
+};
 let tetris_piece = i_piece;
 //const i_piece = [
 //    {x: cubeSize * 4, y: cubeSize * 3},
@@ -126,7 +135,7 @@ let tetris_piece = i_piece;
 //    {cubes: z_piece, fillColor: "#39004d", lineColor: "#ac00e6"}
 //];
 //
-//window.addEventListener("keydown", changeDirection);
+window.addEventListener("keydown", change_direction);
 //resetBtn.addEventListener("click", resetGame);
 //
 gameStart();
@@ -149,7 +158,9 @@ function nextTick(){
     if(running){
         setTimeout(()=>{
             clearBoard(game_board_array);
-            move_tetris_piece_down();
+//            clear_tetris_piece(tetris_piece);
+            draw_tetris_piece(tetris_piece);
+//            TODO: add functionality taht moves piece down y axis
 //            drawTetrisPiece(currentPiece.cubes, currentPiece.fillColor, currentPiece.lineColor);
 //            moveTetrisPiece(currentPiece.cubes);
 //            if(collisionDetection(currentPiece.cubes)){
@@ -163,12 +174,7 @@ function nextTick(){
         displayGameOver();
     }
 };
-function move_tetris_piece_down(){
-    for(let i = 0; i < tetris_piece.cube_numbers.length; i++){
-        tetris_piece.cube_numbers[i] += 10;
-    }
-//    move_tetris_piece_down(tetris_piece);
-};
+
 //
 function clearBoard(game_board_array){
     game_board_array.forEach(row => {
@@ -178,16 +184,33 @@ function clearBoard(game_board_array){
             ctx.strokeStyle = cube.outline_color;
             ctx.strokeRect(cube.x, cube.y, cube_size, cube_size);
 
-            for(let i = 0; i < tetris_piece.cube_numbers.length; i++){
-                if(tetris_piece.cube_numbers[i] == cube.index){
-                    ctx.fillStyle = tetris_piece.fill_color;
-                    ctx.fillRect(cube.x, cube.y, cube_size, cube_size);
-                    ctx.strokeStyle = tetris_piece.outline_color;
-                    ctx.strokeRect(cube.x, cube.y, cube_size, cube_size);
-                }
-            }
+//            for(let i = 0; i < tetris_piece.cube_numbers.length; i++){
+//                if(tetris_piece.cube_numbers[i] == cube.index){
+//                    ctx.fillStyle = tetris_piece.fill_color;
+//                    ctx.fillRect(cube.x, cube.y, cube_size, cube_size);
+//                    ctx.strokeStyle = tetris_piece.outline_color;
+//                    ctx.strokeRect(cube.x, cube.y, cube_size, cube_size);
+//                }
+//            }
         });
     });
+};
+function draw_tetris_piece(piece){
+    ctx.fillStyle = piece.fill_color;
+    ctx.strokeStyle = piece.outline_color;
+    for(let i = 0; i < piece.cubes.length; i++){
+        ctx.fillRect(piece.cubes[i].x, piece.cubes[i].y, cube_size, cube_size);
+        ctx.strokeRect(piece.cubes[i].x, piece.cubes[i].y, cube_size, cube_size);
+    }
+};
+
+function clear_tetris_piece(piece){
+    ctx.fillStyle = color_black;
+    ctx.strokeStyle = color_light_gray;
+    for(let i = 0; i < piece.cubes.length; i++){
+        ctx.fillRect(piece.cubes[i].x, piece.cubes[i].y, cube_size, cube_size);
+        ctx.strokeRect(piece.cubes[i].x, piece.cubes[i].y, cube_size, cube_size);
+    }
 };
 ////
 ////function moveTetrisPiece(piece){
@@ -203,46 +226,50 @@ function clearBoard(game_board_array){
 ////        ctx.strokeRect(tetrisPieceCube.x, tetrisPieceCube.y, cubeSize, cubeSize);
 ////    })
 ////};
-////function changeDirection(event){
-////    const keyPressed = event.keyCode;
-////    setTimeout(()=>{
-////        clearBoard();
-////        drawTetrisPiece(currentPiece.cubes, currentPiece.fillColor, currentPiece.lineColor);
-////        switch(true){
-////            case(keyPressed == LEFT):
-////                moveLeft(currentPiece.cubes);
-////                break;
-////            case(keyPressed == RIGHT):
-////                moveRight(currentPiece.cubes);
-////                break;
-////        }
-////    }, 100);
-////
-////};
+function change_direction(event){
+    const keyPressed = event.keyCode;
+
+    setTimeout(()=>{
+//        clear board where current piece is, and redraw it on a new place
+        clear_tetris_piece(tetris_piece);
+        switch(true){
+
+            case(keyPressed == LEFT):
+                move_left(tetris_piece.cubes);
+                break;
+            case(keyPressed == RIGHT):
+                move_right(tetris_piece.cubes);
+                break;
+        }
+
+        draw_tetris_piece(tetris_piece);
+    }, 100);
+
+};
 ////function checkGameOver(){};
 ////function displayGameOver(){};
 ////function resetGame(){};
 ////
-////function moveLeft(piece){
-////    for (let cube of piece) {
-////        if(cube.x == 0) return;
-////    }
-////
-////    for (let cube of piece) {
-////        cube.x -= cubeSize;
-////    }
-////}
-////
-////function moveRight(piece){
-////    for (let cube of piece) {
-////        if(cube.x == gameBackdropWidth - cubeSize) return;
-////    }
-////
-////    for (let cube of piece) {
-////        cube.x += cubeSize;
-////    }
-////}
-////
+function move_left(piece){
+    for (let cube of piece) {
+        if(cube.x == 0) return;
+    }
+
+    for (let cube of piece) {
+        cube.x -= cube_size;
+    }
+}
+
+function move_right(piece){
+    for (let cube of piece) {
+        if(cube.x == game_width - cube_size) return;
+    }
+
+    for (let cube of piece) {
+        cube.x += cube_size;
+    }
+}
+
 ////function collisionDetection(piece){
 ////    for (let cube of piece){
 ////        if(cube.y >= gameBackdropHeight){
