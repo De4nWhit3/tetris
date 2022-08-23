@@ -31,12 +31,13 @@ const DOWN = 40;
 
 const game_board_columns = game_width / cube_size;
 const game_board_rows = game_height / cube_size;
+let cube_number = 1;
 // set all active and color properties to defaults for a fresh game
 
 game_board_array = [...Array(game_board_rows)].map(e => {
     let arr = [];
     for(let i = 0; i < 10; i++){
-        arr.push({active: false, x: 0, y: 0, fill_color: color_light_gray,outline_color: color_light_gray });
+        arr.push({active: false, x: 0, y: 0, index: cube_number++, fill_color: color_black,outline_color: color_light_gray });
     }
     return arr;
 });
@@ -58,7 +59,7 @@ game_board_array.forEach(cube_array => {
 //
 let running = false;
 //let xVelocity = 0; // how fast we move (40px) to the right on a tick
-//let yVelocity = cubeSize;
+let y_velocity = cube_size;
 //let cubeX;
 //let cubeY;
 let game_speed = 1000;
@@ -67,6 +68,8 @@ let game_speed = 1000;
 //
 //// an array of objects, each object is a cube of a piece, each has their own x and y coordinates
 ////  TODO: j and s freakout
+const i_piece = {cube_numbers: [5, 15, 25, 35], fill_color: color_dark_blue, outline_color: color_light_blue};
+let tetris_piece = i_piece;
 //const i_piece = [
 //    {x: cubeSize * 4, y: cubeSize * 3},
 //    {x: cubeSize * 4, y: cubeSize * 2},
@@ -146,6 +149,7 @@ function nextTick(){
     if(running){
         setTimeout(()=>{
             clearBoard(game_board_array);
+            move_tetris_piece_down();
 //            drawTetrisPiece(currentPiece.cubes, currentPiece.fillColor, currentPiece.lineColor);
 //            moveTetrisPiece(currentPiece.cubes);
 //            if(collisionDetection(currentPiece.cubes)){
@@ -159,26 +163,31 @@ function nextTick(){
         displayGameOver();
     }
 };
+function move_tetris_piece_down(){
+    for(let i = 0; i < tetris_piece.cube_numbers.length; i++){
+        tetris_piece.cube_numbers[i] += 10;
+    }
+//    move_tetris_piece_down(tetris_piece);
+};
 //
 function clearBoard(game_board_array){
     game_board_array.forEach(row => {
         row.forEach(cube => {
-            ctx.fillstyle = cube.fill_color;
+            ctx.fillStyle = cube.fill_color;
             ctx.fillRect(cube.x, cube.y, cube_size, cube_size);
             ctx.strokeStyle = cube.outline_color;
             ctx.strokeRect(cube.x, cube.y, cube_size, cube_size);
-//            console.log(cube.x);
+
+            for(let i = 0; i < tetris_piece.cube_numbers.length; i++){
+                if(tetris_piece.cube_numbers[i] == cube.index){
+                    ctx.fillStyle = tetris_piece.fill_color;
+                    ctx.fillRect(cube.x, cube.y, cube_size, cube_size);
+                    ctx.strokeStyle = tetris_piece.outline_color;
+                    ctx.strokeRect(cube.x, cube.y, cube_size, cube_size);
+                }
+            }
         });
     });
-
-//    ctx.fillStyle = greyDark;
-//    ctx.fillRect(0, 0, gameBackdropWidth, gameBackdropHeight);
-//    ctx.strokeStyle = "black";
-//    for(let i = 0; i <= gameBackdropHeight; i += cubeSize){
-//        for(let j = 0; j <= gameBackdropWidth; j += cubeSize){
-//            ctx.strokeRect(j, i, cubeSize, cubeSize);
-//        }
-//    }
 };
 ////
 ////function moveTetrisPiece(piece){
