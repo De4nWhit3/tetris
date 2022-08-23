@@ -160,6 +160,7 @@ function nextTick(){
             clearBoard(game_board_array);
 //            clear_tetris_piece(tetris_piece);
             draw_tetris_piece(tetris_piece);
+            move_tetris_piece_down(tetris_piece);
 //            TODO: add functionality taht moves piece down y axis
 //            drawTetrisPiece(currentPiece.cubes, currentPiece.fillColor, currentPiece.lineColor);
 //            moveTetrisPiece(currentPiece.cubes);
@@ -183,15 +184,6 @@ function clearBoard(game_board_array){
             ctx.fillRect(cube.x, cube.y, cube_size, cube_size);
             ctx.strokeStyle = cube.outline_color;
             ctx.strokeRect(cube.x, cube.y, cube_size, cube_size);
-
-//            for(let i = 0; i < tetris_piece.cube_numbers.length; i++){
-//                if(tetris_piece.cube_numbers[i] == cube.index){
-//                    ctx.fillStyle = tetris_piece.fill_color;
-//                    ctx.fillRect(cube.x, cube.y, cube_size, cube_size);
-//                    ctx.strokeStyle = tetris_piece.outline_color;
-//                    ctx.strokeRect(cube.x, cube.y, cube_size, cube_size);
-//                }
-//            }
         });
     });
 };
@@ -203,6 +195,12 @@ function draw_tetris_piece(piece){
     for(let i = 0; i < piece.cubes.length; i++){
         ctx.fillRect(piece.cubes[i].x, piece.cubes[i].y, cube_size, cube_size);
         ctx.strokeRect(piece.cubes[i].x, piece.cubes[i].y, cube_size, cube_size);
+    }
+};
+
+function move_tetris_piece_down(piece){
+    for(let i = 0; i < piece.cubes.length; i++){
+        piece.cubes[i].y += cube_size;
     }
 };
 
@@ -236,8 +234,6 @@ function change_direction(event){
                 draw_tetris_piece(tetris_piece);
                 break;
         }
-
-
     }, 100);
 
 };
