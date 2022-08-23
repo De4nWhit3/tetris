@@ -56,7 +56,6 @@ game_board_array.forEach(cube_array => {
     x_offset = 0;
 });
 
-//
 let running = false;
 let game_speed = 1000;
 //let score = 0;
@@ -143,14 +142,13 @@ let tetris_pieces = [i_piece, j_piece, l_piece, o_piece, s_piece, z_piece, t_pie
 
 window.addEventListener("keydown", change_direction);
 //resetBtn.addEventListener("click", resetGame);
-//
+
 gameStart();
-//
+
 function gameStart(){
     running = true;
     tetris_piece = getRandomTetrisPiece(tetris_pieces);
 //    scoreText.textContent = score;
-//    currentPiece = getRandomTetrisPiece(tetrisPieces);
     nextTick();
 };
 
@@ -164,16 +162,9 @@ function nextTick(){
     if(running){
         setTimeout(()=>{
             clearBoard(game_board_array);
-//            clear_tetris_piece(tetris_piece);
             draw_tetris_piece(tetris_piece);
 
             move_tetris_piece_down(tetris_piece);
-//            TODO: add functionality taht moves piece down y axis
-//            drawTetrisPiece(currentPiece.cubes, currentPiece.fillColor, currentPiece.lineColor);
-//            moveTetrisPiece(currentPiece.cubes);
-//            if(collisionDetection(currentPiece.cubes)){
-//                currentPiece = getRandomTetrisPiece(tetrisPieces);
-//            }
 //            checkGameOver();
             nextTick();
         }, game_speed);
@@ -219,20 +210,6 @@ function move_tetris_piece_down(piece){
     }
 };
 
-////
-////function moveTetrisPiece(piece){
-////    for(let cube of piece){
-////        cube.y = cube.y + yVelocity;
-////    }
-////};
-////function drawTetrisPiece(piece, darkColor, lightColor){
-////    ctx.fillStyle = darkColor;
-////    ctx.strokeStyle = lightColor; // for border our tetris piece is an array of objects
-////    piece.forEach((tetrisPieceCube)=>{
-////        ctx.fillRect(tetrisPieceCube.x, tetrisPieceCube.y, cubeSize, cubeSize);
-////        ctx.strokeRect(tetrisPieceCube.x, tetrisPieceCube.y, cubeSize, cubeSize);
-////    })
-////};
 function change_direction(event){
     const keyPressed = event.keyCode;
 
