@@ -58,7 +58,6 @@ game_board_array.forEach(cube_array => {
 
 //
 let running = false;
-let y_velocity = cube_size;
 let game_speed = 1000;
 //let score = 0;
 
@@ -156,10 +155,9 @@ function gameStart(){
 };
 
 function getRandomTetrisPiece(pieces) {
-    //    TODO: make a copy of and make sure not to manipulate const cubes, the x and y should not change
-    let randomIndex = Math.floor(Math.random() * 7);
-    var newPiece = pieces[randomIndex];
-    return newPiece;
+    let random_index = Math.floor(Math.random() * 7);
+    const new_piece = JSON.parse(JSON.stringify(pieces[random_index]));
+    return new_piece;
 }
 
 function nextTick(){
@@ -211,6 +209,7 @@ function move_tetris_piece_down(piece){
 //    TODO: only move down if we are not at the bottom of the board
     for(let i = 0; i < piece.cubes.length; i++){
         if(piece.cubes[i].y >= game_height - cube_size){
+        tetris_piece = getRandomTetrisPiece(tetris_pieces);
             return;
         }
     }
