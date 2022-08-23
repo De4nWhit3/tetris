@@ -58,16 +58,10 @@ game_board_array.forEach(cube_array => {
 
 //
 let running = false;
-//let xVelocity = 0; // how fast we move (40px) to the right on a tick
 let y_velocity = cube_size;
-//let cubeX;
-//let cubeY;
 let game_speed = 1000;
 //let score = 0;
-//let currentPiece;
-//
-//// an array of objects, each object is a cube of a piece, each has their own x and y coordinates
-////  TODO: j and s freakout
+
 const i_piece = {
     cubes: [
         {x: cube_size * 4, y: 0},
@@ -78,63 +72,76 @@ const i_piece = {
     fill_color: color_dark_blue,
     outline_color: color_light_blue
 };
-let tetris_piece = i_piece;
-//const i_piece = [
-//    {x: cubeSize * 4, y: cubeSize * 3},
-//    {x: cubeSize * 4, y: cubeSize * 2},
-//    {x: cubeSize * 4, y: cubeSize},
-//    {x: cubeSize * 4, y: 0}
-//];
-//const j_piece = [
-//    {x: cubeSize * 4, y: cubeSize * 2},
-//    {x: cubeSize * 5, y: cubeSize * 2},
-//    {x: cubeSize * 5, y: cubeSize},
-//    {x: cubeSize * 5, y: 0}
-//];
-//const l_piece = [
-//    {x: cubeSize * 4, y: 0},
-//    {x: cubeSize * 4, y: cubeSize},
-//    {x: cubeSize * 4, y: cubeSize * 2},
-//    {x: cubeSize * 5, y: cubeSize * 2}
-//];
-//const o_piece = [
-//  {x: cubeSize * 5, y: cubeSize},
-//  {x: cubeSize * 5, y: 0},
-//  {x: cubeSize * 4, y: cubeSize},
-//  {x: cubeSize * 4, y: 0}
-//];
-//const s_piece = [
-//    {x: cubeSize * 5, y: 0},
-//    {x: cubeSize * 4, y: 0},
-//    {x: cubeSize * 4, y: cubeSize},
-//    {x: cubeSize * 3, y: cubeSize}
-//];
-//const z_piece = [
-//    {x: cubeSize * 5, y: cubeSize},
-//    {x: cubeSize * 4, y: cubeSize},
-//    {x: cubeSize * 4, y: 0},
-//    {x: cubeSize * 3, y: 0}
-//];
-//const t_piece = [
-//    {x: cubeSize * 5, y: 0},
-//    {x: cubeSize * 4, y: 0},
-//    {x: cubeSize * 3, y: 0},
-//    {x: cubeSize * 4, y: cubeSize}
-//];
-//
 
+const j_piece = {
+    cubes: [
+        {x: cube_size * 5, y: 0},
+        {x: cube_size * 5, y: cube_size},
+        {x: cube_size * 5, y: cube_size * 2},
+        {x: cube_size * 4, y: cube_size * 2}
+    ],
+    fill_color: color_dark_yellow,
+    outline_color: color_light_yellow
+};
 
-//
-//let tetrisPieces = [
-//    {cubes: i_piece, fillColor: "#003366", lineColor: "#00e6e6"},
-//    {cubes: j_piece, fillColor: "#b38f00", lineColor: "#ffff00"},
-//    {cubes: l_piece, fillColor: "#226600", lineColor: "#66ff33"},
-//    {cubes: o_piece, fillColor: "#b30059", lineColor: "#ff99ff"},
-//    {cubes: s_piece, fillColor: "#993d00", lineColor: "#ff751a"},
-//    {cubes: t_piece, fillColor: "#660000", lineColor: "#ff0000"},
-//    {cubes: z_piece, fillColor: "#39004d", lineColor: "#ac00e6"}
-//];
-//
+const l_piece = {
+    cubes: [
+        {x: cube_size * 5, y: 0},
+        {x: cube_size * 5, y: cube_size},
+        {x: cube_size * 5, y: cube_size * 2},
+        {x: cube_size * 6, y: cube_size * 2}
+    ],
+    fill_color: color_dark_green,
+    outline_color: color_light_green
+};
+
+const o_piece = {
+    cubes: [
+        {x: cube_size * 4, y: 0},
+        {x: cube_size * 4, y: cube_size},
+        {x: cube_size * 5, y: 0},
+        {x: cube_size * 5, y: cube_size}
+    ],
+    fill_color: color_dark_pink,
+    outline_color: color_light_pink
+};
+
+const s_piece = {
+    cubes: [
+        {x: cube_size * 5, y: 0},
+        {x: cube_size * 4, y: cube_size},
+        {x: cube_size * 6, y: 0},
+        {x: cube_size * 5, y: cube_size}
+    ],
+    fill_color: color_dark_orange,
+    outline_color: color_light_orange
+};
+
+const z_piece = {
+    cubes: [
+        {x: cube_size * 4, y: 0},
+        {x: cube_size * 5, y: cube_size},
+        {x: cube_size * 5, y: 0},
+        {x: cube_size * 6, y: cube_size}
+    ],
+    fill_color: color_dark_red,
+    outline_color: color_light_red
+};
+
+const t_piece = {
+    cubes: [
+        {x: cube_size * 4, y: 0},
+        {x: cube_size * 5, y: 0},
+        {x: cube_size * 6, y: 0},
+        {x: cube_size * 5, y: cube_size}
+    ],
+    fill_color: color_dark_purple,
+    outline_color: color_light_purple
+};
+
+let tetris_piece; // used to hold the current piece
+let tetris_pieces = [i_piece, j_piece, l_piece, o_piece, s_piece, z_piece, t_piece];
+
 window.addEventListener("keydown", change_direction);
 //resetBtn.addEventListener("click", resetGame);
 //
@@ -142,18 +149,19 @@ gameStart();
 //
 function gameStart(){
     running = true;
+    tetris_piece = getRandomTetrisPiece(tetris_pieces);
 //    scoreText.textContent = score;
 //    currentPiece = getRandomTetrisPiece(tetrisPieces);
     nextTick();
 };
-////
-////function getRandomTetrisPiece(pieces) {
-////    let randomIndex = Math.floor(Math.random() * 7);
-//////    TODO: make a copy of and make sure not to manipulate const cubes, the x and y should not change
-////    var newPiece = pieces[randomIndex];
-////    return newPiece;
-////}
-////
+
+function getRandomTetrisPiece(pieces) {
+    //    TODO: make a copy of and make sure not to manipulate const cubes, the x and y should not change
+    let randomIndex = Math.floor(Math.random() * 7);
+    var newPiece = pieces[randomIndex];
+    return newPiece;
+}
+
 function nextTick(){
     if(running){
         setTimeout(()=>{
