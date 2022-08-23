@@ -196,6 +196,8 @@ function clearBoard(game_board_array){
     });
 };
 function draw_tetris_piece(piece){
+//    clear_tetris_piece(piece);
+    clearBoard(game_board_array);
     ctx.fillStyle = piece.fill_color;
     ctx.strokeStyle = piece.outline_color;
     for(let i = 0; i < piece.cubes.length; i++){
@@ -204,14 +206,6 @@ function draw_tetris_piece(piece){
     }
 };
 
-function clear_tetris_piece(piece){
-    ctx.fillStyle = color_black;
-    ctx.strokeStyle = color_light_gray;
-    for(let i = 0; i < piece.cubes.length; i++){
-        ctx.fillRect(piece.cubes[i].x, piece.cubes[i].y, cube_size, cube_size);
-        ctx.strokeRect(piece.cubes[i].x, piece.cubes[i].y, cube_size, cube_size);
-    }
-};
 ////
 ////function moveTetrisPiece(piece){
 ////    for(let cube of piece){
@@ -231,18 +225,19 @@ function change_direction(event){
 
     setTimeout(()=>{
 //        clear board where current piece is, and redraw it on a new place
-        clear_tetris_piece(tetris_piece);
         switch(true){
 
             case(keyPressed == LEFT):
                 move_left(tetris_piece.cubes);
+                draw_tetris_piece(tetris_piece);
                 break;
             case(keyPressed == RIGHT):
                 move_right(tetris_piece.cubes);
+                draw_tetris_piece(tetris_piece);
                 break;
         }
 
-        draw_tetris_piece(tetris_piece);
+
     }, 100);
 
 };
