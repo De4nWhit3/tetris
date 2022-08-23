@@ -195,12 +195,28 @@ function draw_tetris_piece(piece){
         ctx.strokeRect(piece.cubes[i].x, piece.cubes[i].y, cube_size, cube_size);
     }
 };
-
+function stick_tetris_piece(piece){
+    game_board_array.forEach(row => {
+        row.forEach(cube => {
+            for(let i = 0; i < piece.cubes.length; i++){
+    //            console.log(element.a, piece.cubes[i].x);
+                if(cube.x == piece.cubes[i].x && cube.y == piece.cubes[i].y){
+                    cube.active = true;
+                    cube.fill_color = piece.fill_color;
+                    cube.outline_color = piece.outline_color;
+                }
+            }
+        });
+    });
+};
 function move_tetris_piece_down(piece){
 //    TODO: only move down if we are not at the bottom of the board
     for(let i = 0; i < piece.cubes.length; i++){
         if(piece.cubes[i].y >= game_height - cube_size){
-        tetris_piece = getRandomTetrisPiece(tetris_pieces);
+            tetris_piece = getRandomTetrisPiece(tetris_pieces);
+            // TODO: when the bottom is hit, stick the cube there
+            stick_tetris_piece(piece);
+
             return;
         }
     }
@@ -216,13 +232,17 @@ function change_direction(event){
     setTimeout(()=>{
 //        clear board where current piece is, and redraw it on a new place
         switch(true){
-
+            // TODO: if both keys are pressed move left + down
             case(keyPressed == LEFT):
                 move_left(tetris_piece.cubes);
                 draw_tetris_piece(tetris_piece);
                 break;
             case(keyPressed == RIGHT):
                 move_right(tetris_piece.cubes);
+                draw_tetris_piece(tetris_piece);
+                break;
+            case(keyPressed == DOWN):
+                move_tetris_piece_down(tetris_piece);
                 draw_tetris_piece(tetris_piece);
                 break;
         }
