@@ -34,7 +34,7 @@ const game_board_rows = game_height / cube_size;
 let cube_number = 1;
 // set all active and color properties to defaults for a fresh game
 
-game_board_array = [...Array(game_board_rows)].map(e => {
+let game_board_array = [...Array(game_board_rows)].map(e => {
     let arr = [];
     for(let i = 0; i < 10; i++){
         arr.push({active: false, x: 0, y: 0, index: cube_number++, fill_color: color_black,outline_color: color_light_gray });
@@ -48,7 +48,6 @@ let y_offset = 0;
 game_board_array.forEach(cube_array => {
     cube_array.forEach(cube => {
         cube.x = x_offset * cube_size;
-        console.log();
         cube.y = y_offset * cube_size;
         x_offset++;
     });
@@ -57,7 +56,7 @@ game_board_array.forEach(cube_array => {
 });
 
 let running = false;
-let game_speed = 1000;
+let game_speed = 400;
 //let score = 0;
 
 const i_piece = {
@@ -161,10 +160,10 @@ function getRandomTetrisPiece(pieces) {
 function nextTick(){
     if(running){
         setTimeout(()=>{
-            clearBoard(game_board_array);
+            draw_current_board(game_board_array);
             draw_tetris_piece(tetris_piece);
             move_tetris_piece_down(tetris_piece);
-            check_matches();
+            check_matches(game_board_array);
 //            checkGameOver();
             nextTick();
         }, game_speed);
@@ -173,23 +172,18 @@ function nextTick(){
         displayGameOver();
     }
 };
-
-//
-function clearBoard(game_board_array){
-
-    console.log(game_board_array);
+function draw_current_board(game_board_array){
     game_board_array.forEach(row => {
         row.forEach(cube => {
             ctx.fillStyle = cube.fill_color;
-            ctx.fillRect(cube.x, cube.y, cube_size, cube_size);
             ctx.strokeStyle = cube.outline_color;
+            ctx.fillRect(cube.x, cube.y, cube_size, cube_size);
             ctx.strokeRect(cube.x, cube.y, cube_size, cube_size);
         });
     });
 };
 function draw_tetris_piece(piece){
-//    clear_tetris_piece(piece);
-    clearBoard(game_board_array);
+    draw_current_board(game_board_array);
     ctx.fillStyle = piece.fill_color;
     ctx.strokeStyle = piece.outline_color;
     for(let i = 0; i < piece.cubes.length; i++){
@@ -201,7 +195,6 @@ function stick_tetris_piece(piece){
     game_board_array.forEach(row => {
         row.forEach(cube => {
             for(let i = 0; i < piece.cubes.length; i++){
-    //            console.log(element.a, piece.cubes[i].x);
                 if(cube.x == piece.cubes[i].x && cube.y == piece.cubes[i].y){
                     cube.active = true;
                     cube.fill_color = piece.fill_color;
@@ -212,13 +205,10 @@ function stick_tetris_piece(piece){
     });
 };
 function move_tetris_piece_down(piece){
-//    TODO: only move down if we are not at the bottom of the board
     for(let i = 0; i < piece.cubes.length; i++){
         if(piece.cubes[i].y >= game_height - cube_size){
             tetris_piece = getRandomTetrisPiece(tetris_pieces);
-            // TODO: when the bottom is hit, stick the cube there
             stick_tetris_piece(piece);
-            check_matches();
             return;
         }
     }
@@ -227,12 +217,8 @@ function move_tetris_piece_down(piece){
         piece.cubes[i].y += cube_size;
     }
 };
-
 function change_direction(event){
     const keyPressed = event.keyCode;
-
-//    check if there is a full row of 'active' elements, calculate score, remove active row, move rows above down
-    check_matches();
 
     setTimeout(()=>{
 //        clear board where current piece is, and redraw it on a new place
@@ -254,40 +240,39 @@ function change_direction(event){
     }, 100);
 
 };
-function check_matches(){
-
-//    TODO: change gameboardarray without messing with reference
-    // loop over all rows
-    let indices_to_delete = [];
+function check_matches(game_board_array){
+    let rows_to_delete = [];
     for(let i = 0; i < game_board_array.length; i++){
-        let row = game_board_array[i];
-        let all_active = false;
-        for(let j = 0; j < row.length; j++){
-            if(row[j].active){
-                all_active = true;
-                continue;
+        let all_cubes_active = false;
+        for(let j = 0; j < game_board_array[i].length; j++){
+            // looking at each cube, in a specific row
+            if(game_board_array[i][j].active){
+                all_cubes_active = true;
             }
             else{
-                all_active = false;
+                all_cubes_active = false;
                 break;
             }
         }
-
-        if(all_active){
-            indices_to_delete.push(i);
-            all_active = false;
+        //save index if true
+        if(all_cubes_active){
+            rows_to_delete.push(i);
         }
     }
 
-//    for(let i = 0; i < indices_to_delete.length; i++){
-//        game_board_array.splice(indices_to_delete[i], 1);
-//
-//        let arr = [];
-//        for(let i = 0; i < 10; i++){
-//            arr.push({active: false, x: 0, y: 0, index: cube_number++, fill_color: color_black,outline_color: color_light_gray });
-//        }
-//        game_board_array.unshift(arr);
-//    }
+    for(let i = 0; i < rows_to_delete.length; i++){
+        game_board_array.splice(rows_to_delete[i], 1);
+    }
+
+    for(let i = 0; i < rows_to_delete.length; i++){
+        let arr = [];
+
+        for(let i = 0; i < 10; i++){
+            arr.push({active: false, x: 0, y: 0, index: cube_number++, fill_color: color_black,outline_color: color_light_gray });
+        }
+
+        game_board_array.unshift(arr);
+    }
 };
 ////function checkGameOver(){};
 ////function displayGameOver(){};
@@ -301,8 +286,7 @@ function move_left(piece){
     for (let cube of piece) {
         cube.x -= cube_size;
     }
-}
-
+};
 function move_right(piece){
     for (let cube of piece) {
         if(cube.x == game_width - cube_size) return;
@@ -311,8 +295,7 @@ function move_right(piece){
     for (let cube of piece) {
         cube.x += cube_size;
     }
-}
-
+};
 ////function collisionDetection(piece){
 ////    for (let cube of piece){
 ////        if(cube.y >= gameBackdropHeight){
