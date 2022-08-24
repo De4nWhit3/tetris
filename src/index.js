@@ -160,6 +160,7 @@ function getRandomTetrisPiece(pieces) {
 function nextTick(){
     if(running){
         setTimeout(()=>{
+            console.log(game_board_array[game_board_array.length-1]);
             draw_current_board(game_board_array);
             draw_tetris_piece(tetris_piece);
             move_tetris_piece_down(tetris_piece);
@@ -272,6 +273,23 @@ function check_matches(game_board_array){
         }
 
         game_board_array.unshift(arr);
+    }
+
+    // TODO: Update all the x and y axis for the new elements
+
+    if(rows_to_delete){
+        let x_offset = 0;
+        let y_offset = 0;
+
+        game_board_array.forEach(cube_array => {
+            cube_array.forEach(cube => {
+                cube.x = x_offset * cube_size;
+                cube.y = y_offset * cube_size;
+                x_offset++;
+            });
+            y_offset++;
+            x_offset = 0;
+        });
     }
 };
 ////function checkGameOver(){};
