@@ -160,7 +160,6 @@ function getRandomTetrisPiece(pieces) {
 function nextTick(){
     if(running){
         setTimeout(()=>{
-            console.log(game_board_array[game_board_array.length-1]);
             draw_current_board(game_board_array);
             draw_tetris_piece(tetris_piece);
             move_tetris_piece_down(tetris_piece);
@@ -241,6 +240,7 @@ function change_direction(event){
     }, 100);
 
 };
+// TODO: too many elements in array, 21, when deleting 2 rows instead of 20
 function check_matches(game_board_array){
     let rows_to_delete = [];
     for(let i = 0; i < game_board_array.length; i++){
@@ -262,7 +262,7 @@ function check_matches(game_board_array){
     }
 
     for(let i = 0; i < rows_to_delete.length; i++){
-        game_board_array.splice(rows_to_delete[i], 1);
+        game_board_array.splice(rows_to_delete[rows_to_delete.length - i - 1], 1);
     }
 
     for(let i = 0; i < rows_to_delete.length; i++){
@@ -274,9 +274,7 @@ function check_matches(game_board_array){
 
         game_board_array.unshift(arr);
     }
-
-    // TODO: Update all the x and y axis for the new elements
-
+    
     if(rows_to_delete){
         let x_offset = 0;
         let y_offset = 0;
