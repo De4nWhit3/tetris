@@ -7,10 +7,11 @@ let running = false;
 let game_speed = 1000;
 let score = 0;
 let tetris_piece; // used to hold the current piece
+let orientation = 'original';
+let index = 0;
 
 let game_board = [...Array(ROWS)].map(e => {
     let arr = [];
-    let index = 0;
     for(let i = 0; i < COLS; i++){
         arr.push({
             index: index++,
@@ -22,12 +23,11 @@ let game_board = [...Array(ROWS)].map(e => {
     return arr;
 });
 
-//gameStart();
+gameStart();
 
 function gameStart(){
     running = true;
     tetris_piece = new TetrisPiece('I');
-    console.log(tetris_piece);
     nextTick();
 };
 
@@ -36,7 +36,7 @@ function nextTick(){
         setTimeout(()=>{
             draw_current_board(game_board);
 //            draw_current_board(game_board_array);
-//            draw_tetris_piece(tetris_piece);
+            draw_tetris_piece(tetris_piece, orientation);
 //            move_tetris_piece_down(tetris_piece);
 //            check_matches(game_board_array);
             nextTick();
@@ -47,16 +47,40 @@ function nextTick(){
 //    }
 };
 
+function draw_tetris_piece(tetris_piece, orientation){
+    let piece =  tetris_piece.orientation[orientation];
+    CONTEXT.fillStyle = tetris_piece.fill_color;
+    CONTEXT.strokeStyle = tetris_piece.outline_color;
+
+    piece.forEach(cube => {
+        let x = (cube % 10) * CUBE_SIZE;
+        let y = (Math.floor(cube/10)) * CUBE_SIZE;
+
+        game_board.forEach(row => {
+            row.forEach(column => {
+                if (cube == column.index) {
+                    CONTEXT.fillRect(x, y, CUBE_SIZE, CUBE_SIZE);
+                    CONTEXT.strokeRect(x, y, CUBE_SIZE, CUBE_SIZE);
+                }
+            });
+        });
+    });
+}
+
 function draw_current_board(game_board){
-    console.log(game_board);
-//    game_board_array.forEach(row => {
-//        row.forEach(cube => {
-//            ctx.fillStyle = cube.fill_color;
-//            ctx.strokeStyle = cube.outline_color;
-//            ctx.fillRect(cube.x, cube.y, cube_size, cube_size);
-//            ctx.strokeRect(cube.x, cube.y, cube_size, cube_size);
-//        });
-//    });
+    let x = 0;
+    let y = 0;
+    game_board.forEach(row => {
+        row.forEach(column => {
+            CONTEXT.fillStyle = column.fill_color;
+            CONTEXT.strokeStyle = column.outline_color;
+            CONTEXT.fillRect(x, y, CUBE_SIZE, CUBE_SIZE);
+            CONTEXT.strokeRect(x, y, CUBE_SIZE, CUBE_SIZE);
+            x+=CUBE_SIZE;
+        });
+        y+=CUBE_SIZE;
+        x=0;
+    });
 };
 
 //function tetris(){
