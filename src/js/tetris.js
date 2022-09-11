@@ -1,3 +1,4 @@
+// todo: refactor with camelCase
 import {ROWS, COLS, CUBE_SIZE, GAME_BACKGROUND, CONTEXT, GAME_WIDTH, GAME_HEIGHT, SCORE_TEXT} from './constants.js';
 import {UP, DOWN, LEFT, RIGHT, SPACE_BAR} from './controls.js';
 import {COLORS} from "./colors.js";
@@ -6,8 +7,8 @@ import {TetrisPiece} from './tetris_piece.js'; // I J L O S Z T
 let running = false;
 let game_speed = 1000;
 let score = 0;
-let tetris_piece; // used to hold the current piece
-let orientation = 'original';
+let tetrisPiece; // used to hold the current piece
+let orientation;
 let index = 0;
 
 let game_board = [...Array(ROWS)].map(e => {
@@ -23,23 +24,35 @@ let game_board = [...Array(ROWS)].map(e => {
     return arr;
 });
 
+window.addEventListener("keydown", processKeyPress);
 gameStart();
+
+//function tetris(){
+//    let piece_I = new TetrisPiece('I');
+//    let piece_J = new TetrisPiece('J');
+//    let piece_L = new TetrisPiece('L');
+//    let piece_O = new TetrisPiece('O');
+//    let piece_S = new TetrisPiece('S');
+//    let piece_Z = new TetrisPiece('Z');
+//    let piece_T = new TetrisPiece('T');
+//}
 
 function gameStart(){
     running = true;
-    tetris_piece = new TetrisPiece('I');
-    nextTick();
+    tetrisPiece = new TetrisPiece('J');
+    orientation = 'original';
+    next_tick();
 };
 
-function nextTick(){
+function next_tick(){
     if(running){
         setTimeout(()=>{
             draw_current_board(game_board);
 //            draw_current_board(game_board_array);
-            draw_tetris_piece(tetris_piece, orientation);
+            draw_tetris_piece(tetrisPiece, orientation);
 //            move_tetris_piece_down(tetris_piece);
 //            check_matches(game_board_array);
-            nextTick();
+            next_tick();
         }, game_speed);
     }
 //    else {
@@ -47,10 +60,10 @@ function nextTick(){
 //    }
 };
 
-function draw_tetris_piece(tetris_piece, orientation){
-    let piece =  tetris_piece.orientation[orientation];
-    CONTEXT.fillStyle = tetris_piece.fill_color;
-    CONTEXT.strokeStyle = tetris_piece.outline_color;
+function draw_tetris_piece(tetrisPiece, orientation){
+    let piece =  tetrisPiece.orientation[orientation];
+    CONTEXT.fillStyle = tetrisPiece.fill_color;
+    CONTEXT.strokeStyle = tetrisPiece.outline_color;
 
     piece.forEach(cube => {
         let x = (cube % 10) * CUBE_SIZE;
@@ -82,13 +95,64 @@ function draw_current_board(game_board){
         x=0;
     });
 };
+function rotatePiece(){
+    switch(orientation){
+        case "original":
+            orientation = "right";
+            break;
+        case "right":
+            orientation = "inverse";
+            break;
+        case "inverse":
+            orientation = "left";
+            break;
+        default:
+            orientation = "original";
+    }
+};
+function movePieceRight(tetrisPiece){
+    // get the orientation
+    console.log(tetrisPiece);
+};
+function processKeyPress(event){
+    const keyPressed = event.keyCode;
 
-//function tetris(){
-//    let piece_I = new TetrisPiece('I');
-//    let piece_J = new TetrisPiece('J');
-//    let piece_L = new TetrisPiece('L');
-//    let piece_O = new TetrisPiece('O');
-//    let piece_S = new TetrisPiece('S');
-//    let piece_Z = new TetrisPiece('Z');
-//    let piece_T = new TetrisPiece('T');
-//}
+    setTimeout(()=>{
+//        clear board where current piece is, and redraw it on a new place
+        switch(true){
+            // TODO: if both keys are pressed move left + down
+            case(keyPressed == UP):
+                rotatePiece();
+                draw_current_board(game_board);
+                draw_tetris_piece(tetrisPiece, orientation);
+                break;
+            case(keyPressed == RIGHT):
+                console.log("RIGHT was pressed");
+                movePieceRight(tetrisPiece);
+//                // TODO: collision detection, cannot move right through active cubes
+//                collisionDetection(tetris_piece.cubes, "right")
+//                move_right(tetris_piece.cubes);
+//                draw_tetris_piece(tetris_piece);
+                break;
+            case(keyPressed == DOWN):
+                console.log("DOWN was pressed");
+//                collisionDetection(tetris_piece.cubes, "down")
+//                move_tetris_piece_down(tetris_piece);
+//                draw_tetris_piece(tetris_piece);
+                break;
+            case(keyPressed == LEFT):
+                console.log("LEFT was pressed");
+            //                collisionDetection(tetris_piece.cubes, "down")
+            //                move_tetris_piece_down(tetris_piece);
+            //                draw_tetris_piece(tetris_piece);
+                break;
+            case(keyPressed == SPACE_BAR):
+                console.log("SPACE was pressed");
+            //                collisionDetection(tetris_piece.cubes, "down")
+            //                move_tetris_piece_down(tetris_piece);
+            //                draw_tetris_piece(tetris_piece);
+                break;
+        }
+    }, 100);
+
+};

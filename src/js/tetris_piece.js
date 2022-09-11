@@ -16,50 +16,62 @@ export class TetrisPiece{ // I J L O S Z T
             case "J":
                 this.fill_color = COLORS.yellow_dark;
                 this.outline_color = COLORS.yellow_light;
-                this.orientation.original = [5, 15, 25, 24];
-                this.orientation.right = [3, 13, 14, 15];
-                this.orientation.inverse = [5, 4, 14, 24];
-                this.orientation.left = [3, 4, 5, 15];
+                this.orientation = {
+                    original: [5, 15, 25, 24], // default position
+                    right: [3, 13, 14, 15], // flipped to the right
+                    inverse: [5, 4, 14, 24], // flipped upside down
+                    left: [3, 4, 5, 15] // flipped to the left
+                };
                 break;
             case "L":
                 this.fill_color = COLORS.green_dark;
                 this.outline_color = COLORS.green_light;
-                this.orientation.original = [4, 14, 24, 25];
-                this.orientation.right = [4, 5, 6, 14];
-                this.orientation.inverse = [4, 5, 15, 25];
-                this.orientation.left = [13, 14, 15, 5];
+                this.orientation = {
+                    original: [4, 14, 24, 25], // default position
+                    right: [4, 5, 6, 14], // flipped to the right
+                    inverse: [4, 5, 15, 25], // flipped upside down
+                    left: [13, 14, 15, 5] // flipped to the left
+                };
                 break;
             case "O":
                 this.fill_color = COLORS.pink_dark;
                 this.outline_color = COLORS.pink_light;
-                this.orientation.original = [4, 5, 14, 15];
-                this.orientation.right = [4, 5, 14, 15];
-                this.orientation.inverse = [4, 5, 14, 15];
-                this.orientation.left = [4, 5, 14, 15];
+                this.orientation = {
+                    original: [4, 5, 14, 15], // default position
+                    right: [4, 5, 14, 15], // flipped to the right
+                    inverse: [4, 5, 14, 15], // flipped upside down
+                    left: [4, 5, 14, 15] // flipped to the left
+                };
                 break;
             case "S":
                 this.fill_color = COLORS.orange_dark;
                 this.outline_color = COLORS.orange_light;
-                this.orientation.original = [4, 5, 13, 14];
-                this.orientation.right = [4, 14, 15, 25];
-                this.orientation.inverse = [4, 5, 13, 14];
-                this.orientation.left = [4, 14, 15, 25];
+                this.orientation = {
+                    original: [4, 5, 13, 14], // default position
+                    right: [4, 14, 15, 25], // flipped to the right
+                    inverse: [4, 5, 13, 14], // flipped upside down
+                    left: [4, 14, 15, 25] // flipped to the left
+                };
                 break;
             case "Z":
                 this.fill_color = COLORS.red_dark;
                 this.outline_color = COLORS.red_light;
-                this.orientation.original = [3, 4, 14, 15];
-                this.orientation.right = [5, 15, 14, 24];
-                this.orientation.inverse = [3, 4, 14, 15];
-                this.orientation.left = [5, 15, 14, 24];
+                this.orientation = {
+                    original: [3, 4, 14, 15], // default position
+                    right: [5, 15, 14, 24], // flipped to the right
+                    inverse: [3, 4, 14, 15], // flipped upside down
+                    left: [5, 15, 14, 24] // flipped to the left
+                };
                 break;
             case "T":
                 this.fill_color = COLORS.purple_dark;
                 this.outline_color = COLORS.purple_light;
-                this.orientation.original = [3, 4, 5, 14];
-                this.orientation.right = [5, 15, 25, 14];
-                this.orientation.inverse = [4, 13, 14, 15];
-                this.orientation.left = [4, 14, 24, 15];
+                this.orientation = {
+                    original: [3, 4, 5, 14], // default position
+                    right: [5, 15, 25, 14], // flipped to the right
+                    inverse: [4, 13, 14, 15], // flipped upside down
+                    left: [4, 14, 24, 15] // flipped to the left
+                };
                 break;
             default:
                 console.log(`WARNING: Shape was not provided!`);
